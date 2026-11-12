@@ -1,0 +1,36 @@
+name: Build DeS Unified Weapons
+
+on:
+  push:
+    paths:
+      - 'DeS-Unified-Weapons-Source.zip'
+      - '.github/workflows/build-plugin.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract source
+        run: |
+          mkdir source
+          unzip -q DeS-Unified-Weapons-Source.zip -d source
+          test -f source/DeS-Unified-Weapons/plugin/build.gradle
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Build plugin
+        working-directory: source/DeS-Unified-Weapons/plugin
+        run: gradle --no-daemon clean build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DeS-Unified-Weapons-JAR
+          path: source/DeS-Unified-Weapons/plugin/build/libs/*.jar
