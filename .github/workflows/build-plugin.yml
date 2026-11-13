@@ -1,3 +1,4 @@
+
 name: Build DeS Unified Weapons
 
 on:
@@ -13,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Extract plugin source
+      - name: Extract fixed plugin source
         run: unzip -q DeS-Unified-Weapons-MERGED-CLEAN-FIXED.zip
 
       - name: Set up Java
